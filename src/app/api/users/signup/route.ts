@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     let user = await User.findOne({ email });
 
-    if (!user) {
+    if (user) {
       return NextResponse.json(
         { error: "User already exists" },
         { status: 400 }
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     user = await User.create({
       username,
       email,
-      hashedPassword,
+      password: hashedPassword,
     });
 
     await sendMail({ email, emailType: "VERIFY", userId: user._id });
