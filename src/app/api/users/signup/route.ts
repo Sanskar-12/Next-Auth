@@ -11,6 +11,13 @@ export async function POST(request: NextRequest) {
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
 
+    if (!username || !email || !password) {
+      return NextResponse.json(
+        { error: "Please fill all fields" },
+        { status: 400 }
+      );
+    }
+
     let user = await User.findOne({ email });
 
     if (user) {
